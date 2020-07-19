@@ -1,0 +1,289 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>传闻中的陈芊芊</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+    <!--logo开始-->
+    <div class="logo" id="main">
+        <div class="list">
+            <ul>
+                <li class="p7"><a href="#"><img class="img1" src="img/chenchuchu01.png" alt="" /></a></li>
+                <li class="p6"><a href="#"><img class="img1" src="img/chenqianqian01.png" alt="" /></a></li>
+                <li class="p5"><a href="#"><img class="img1" src="img/chenyuanyuan01.png" alt="" /></a></li>
+                <li class="p4"><a href="#"><img class="img1" src="img/hanshuo01.png" alt="" /></a></li>
+                <li class="p3"><a href="#"><img class="img1" src="img/peiheng01.png" alt="" /></a></li>
+                <li class="p2"><a href="#"><img class="img1" src="img/sumu01.png" alt="" /></a></li>
+                <li class="p1"><a href="#"><img class="img1" src="img/chenqianqian01.png" alt="" /></a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        var $a = $(".buttons a");
+        
+        var cArr = ["p7", "p6", "p5", "p4", "p3", "p2", "p1"];
+        var index = 0;
+        $(".next").click(
+            function () {
+                nextimg();
+            }
+        )
+        $(".prev").click(
+            function () {
+                previmg();
+            }
+        )
+        //上一张
+        function previmg() {
+            cArr.unshift(cArr[6]);
+            cArr.pop();
+            //i是元素的索引，从0开始
+            //e为当前处理的元素
+            //each循环，当前处理的元素移除所有的class，然后添加数组索引i的class
+            $("li").each(function (i, e) {
+                $(e).removeClass().addClass(cArr[i]);
+            })
+            index--;
+            if (index < 0) {
+                index = 6;
+            }
+            show();
+        }
+
+        //下一张
+        function nextimg() {
+            cArr.push(cArr[0]);
+            cArr.shift();
+            $("li").each(function (i, e) {
+                $(e).removeClass().addClass(cArr[i]);
+            })
+            index++;
+            if (index > 6) {
+                index = 0;
+            }
+            show();
+        }
+
+        //通过底下按钮点击切换
+        $a.each(function () {
+            $(this).click(function () {
+                var myindex = $(this).index();
+                var b = myindex - index;
+                if (b == 0) {
+                    return;
+                }
+                else if (b > 0) {
+                    /*
+                     * splice(0,b)的意思是从索引0开始,取出数量为b的数组
+                     * 因为每次点击之后数组都被改变了,所以当前显示的这个照片的索引才是0
+                     * 所以取出从索引0到b的数组,就是从原本的这个照片到需要点击的照片的数组
+                     * 这时候原本的数组也将这部分数组进行移除了
+                     * 再把移除的数组添加的原本的数组的后面
+                     */
+                    var newarr = cArr.splice(0, b);
+                    cArr = $.merge(cArr, newarr);
+                    $("li").each(function (i, e) {
+                        $(e).removeClass().addClass(cArr[i]);
+                    })
+                    index = myindex;
+                    show();
+                }
+                else if (b < 0) {
+                    /*
+                     * 因为b<0,所以取数组的时候是倒序来取的,也就是说我们可以先把数组的顺序颠倒一下
+                     * 而b现在是负值,所以取出索引0到-b即为需要取出的数组
+                     * 也就是从原本的照片到需要点击的照片的数组
+                     * 然后将原本的数组跟取出的数组进行拼接
+                     * 再次倒序,使原本的倒序变为正序
+                     */
+                    cArr.reverse();
+                    var oldarr = cArr.splice(0, -b)
+                    cArr = $.merge(cArr, oldarr);
+                    cArr.reverse();
+                    $("li").each(function (i, e) {
+                        $(e).removeClass().addClass(cArr[i]);
+                    })
+                    index = myindex;
+                    show();
+                }
+            })
+        })
+
+        //点击class为p2的元素触发上一张照片的函数
+        $(document).on("click", ".p2", function () {
+            previmg();
+            return false;//返回一个false值，让a标签不跳转
+        });
+
+        //点击class为p4的元素触发下一张照片的函数
+        $(document).on("click", ".p4", function () {
+            nextimg();
+            return false;
+        });
+
+        //			鼠标移入box时清除定时器
+        $(".box").mouseover(function () {
+            clearInterval(timer);
+        })
+
+        //			鼠标移出box时开始定时器
+        $(".box").mouseleave(function () {
+            timer = setInterval(nextimg, 4000);
+        })
+
+        //			进入页面自动开始定时器
+        timer = setInterval(nextimg, 4000);
+    </script>
+
+    <!--logo结束-->
+    <!--导航栏开始-->
+    <div class="jianxi1"></div>
+    <div class="Navigation">
+        <a href="index.html#main" target="_parent">基本介绍</a> 
+        <a href="actors.html#actor" target="_parent">参演演员</a>
+        <a href="fans.html#fans" target="_parent">粉丝见面会</a>
+        <a href="wonderful_moments.html#video" target="_parent">精彩瞬间</a>
+        <a href="talk_over.html#form" target="_parent">留言讨论</a>
+    </div>
+    <!--导航栏结束-->
+    <!--*****************************************************************************-->
+    <div class="jianxi2"></div>
+
+    <form id="form" action="" method="post" class="elegant-aero">
+        <h1>留言版
+            <span>留言讨论，请填入相关内容并提交。</span>
+        </h1>
+        <label>
+            <span>姓 名 :</span>
+            <input id="name" type="text" name="name" placeholder="Your Full Name" />
+        </label>
+        <label>
+            <span>电子邮件 :</span>
+            <input id="email" type="email" name="email" placeholder="Valid Email Address" />
+        </label>
+        <label>
+            <span>手机号 :</span>
+            <input id="number" type="text" name="number" placeholder="Your Phone Number" />
+        </label>
+        <label>
+            <span>留言内容 :</span>
+            <textarea id="message" name="message" placeholder="Your Message to Us"></textarea>
+        </label>
+        <label>
+            <span>&nbsp;</span>
+            <input type="button" class="button" value="提交" />
+        </label>
+    </form>
+    <div class="footerX">CopyRight@copy2020 </div>
+    <!--鼠标特效-->
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script>
+        function o(w, v, i) {
+            return w.getAttribute(v) || i
+        }
+        function j(i) {
+            return document.getElementsByTagName(i)
+        }
+        function l() {
+            var i = j("script"), w = i.length, v = i[w - 1];
+            return { l: w, z: o(v, "zIndex", -1), o: o(v, "opacity", 0.5), c: o(v, "color", "0,0,0"), n: o(v, "count", 99) }
+        }
+        function k() {
+            r = u.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+                n = u.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function b() {
+            e.clearRect(0, 0, r, n);
+            var w = [f].concat(t);
+            var x, v, A, B, z, y;
+            t.forEach(function (i) {
+                i.x += i.xa,
+                    i.y += i.ya,
+                    i.xa *= i.x > r || i.x < 0 ? -1 : 1,
+                    i.ya *= i.y > n || i.y < 0 ? -1 : 1,
+                    e.fillRect(i.x - 0.5, i.y - 0.5, 1, 1);
+                for (v = 0; v < w.length; v++) {
+                    x = w[v];
+                    if (i !== x && null !== x.x && null !== x.y) {
+                        B = i.x - x.x, z = i.y - x.y, y = B * B + z * z;
+                        y < x.max && (x === f && y >= x.max / 2 && (i.x -= 0.03 * B, i.y -= 0.03 * z), A = (x.max - y) / x.max, e.beginPath(), e.lineWidth = A / 2, e.strokeStyle = "rgba(" + s.c + "," + (A + 0.2) + ")", e.moveTo(i.x, i.y), e.lineTo(x.x, x.y), e.stroke())
+                    }
+                }
+                w.splice(w.indexOf(i), 1)
+            }), m(b)
+        }
+        var u = document.createElement("canvas"), s = l(), c = "c_n" + s.l, e = u.getContext("2d"), r, n,
+            m = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (i) {
+                window.setTimeout(i, 1000 / 45)
+            },
+            a = Math.random, f = { x: null, y: null, max: 20000 };
+        u.className = "particle_canvas";
+        var browserName = navigator.userAgent.toLowerCase();
+        if (/msie/i.test(browserName) && !/opera/.test(browserName)) {
+            u.className += ' ie10_gte';
+        };
+        u.id = c;
+        u.style.cssText = "position:fixed;top:0;left:0;z-index:" + s.z + ";opacity:" + s.o;
+        j("body")[0].appendChild(u);
+        k(), window.onresize = k;
+        window.onmousemove = function (i) {
+            i = i || window.event,
+                f.x = i.clientX,
+                f.y = i.clientY
+        },
+            window.onmouseout = function () {
+                f.x = null,
+                    f.y = null
+            };
+        for (var t = [], p = 0; s.n > p; p++) {
+            var h = a() * r,
+                g = a() * n,
+                q = 2 * a() - 1,
+                d = 2 * a() - 1;
+            t.push({ x: h, y: g, xa: q, ya: d, max: 6000 })
+        }
+        setTimeout(function () { b() }, 100)
+    </script>
+    <style>
+        /*################################################################*/
+        .github-corner:hover .octo-arm {
+            animation: octocat-wave 560ms ease-in-out
+        }
+
+        @keyframes octocat-wave {
+
+            0%,
+            100% {
+                transform: rotate(0)
+            }
+
+            20%,
+            60% {
+                transform: rotate(-25deg)
+            }
+
+            40%,
+            80% {
+                transform: rotate(10deg)
+            }
+        }
+
+        @media (max-width:500px) {
+            .github-corner:hover .octo-arm {
+                animation: none
+            }
+
+            .github-corner .octo-arm {
+                animation: octocat-wave 560ms ease-in-out
+            }
+        }
+    </style>
+
+    <!--鼠标特效结束-->
+</body>
+
+</html>
